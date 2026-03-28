@@ -23,6 +23,7 @@ body {
     overflow-x: hidden;
     -webkit-user-select: none;
     user-select: none;
+    transition: background 0.35s ease, color 0.35s ease;
 }
 
 img {
@@ -213,6 +214,43 @@ h1 {
     display: grid;
     gap: 10px;
     justify-items: end;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    left: 26px;
+    z-index: 3;
+    border: 1px solid rgba(17, 17, 17, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #2b1e1b;
+    min-height: 36px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+    transform: translateY(-1px);
+    background: #fff;
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.12);
+    outline: none;
+}
+
+.theme-toggle-icon {
+    font-size: 0.95rem;
+    line-height: 1;
 }
 
 .custom-type-hint {
@@ -1719,6 +1757,188 @@ h1 {
     box-shadow: 0 12px 24px rgba(43, 30, 27, 0.12);
     transform: translateY(-1px);
     outline: none;
+}
+
+body[data-theme="dark"] {
+    color: #efe6d8;
+    background: linear-gradient(180deg, #15181e 0%, #241c1a 100%);
+}
+
+body[data-theme="dark"] .bike-frame,
+body[data-theme="dark"] .features-wrap,
+body[data-theme="dark"] .scrambler-parts-wrap,
+body[data-theme="dark"] .build-stats-wrap,
+body[data-theme="dark"] .feature-tooltip-card,
+body[data-theme="dark"] .custom-type-menu,
+body[data-theme="dark"] .build-vote-panel,
+body[data-theme="dark"] .scrambler-part-spotlight {
+    background: linear-gradient(180deg, rgba(28, 31, 38, 0.94) 0%, rgba(22, 24, 31, 0.96) 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+body[data-theme="dark"] .theme-toggle,
+body[data-theme="dark"] .custom-type-hint,
+body[data-theme="dark"] .features-arrow,
+body[data-theme="dark"] .scroll-cue,
+body[data-theme="dark"] .scroll-cue.is-compact {
+    background: rgba(28, 31, 38, 0.94);
+    color: #f2e7d8;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body[data-theme="dark"] .custom-type-hint::after {
+    background: rgba(28, 31, 38, 0.94);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(255, 255, 255, 0.1);
+}
+
+body[data-theme="dark"] .custom-type-item:hover,
+body[data-theme="dark"] .custom-type-item:focus-visible,
+body[data-theme="dark"] .feature-card:hover,
+body[data-theme="dark"] .feature-card:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+body[data-theme="dark"] .scroll-cue:hover,
+body[data-theme="dark"] .scroll-cue:focus-visible,
+body[data-theme="dark"] .features-arrow:hover,
+body[data-theme="dark"] .features-arrow:focus-visible,
+body[data-theme="dark"] .theme-toggle:hover,
+body[data-theme="dark"] .theme-toggle:focus-visible {
+    background: rgba(42, 47, 58, 0.98);
+}
+
+body[data-theme="dark"] .eyebrow,
+body[data-theme="dark"] h1,
+body[data-theme="dark"] .custom-type-trigger,
+body[data-theme="dark"] .custom-type-item,
+body[data-theme="dark"] .quote-title,
+body[data-theme="dark"] .features-heading,
+body[data-theme="dark"] .feature-card h3,
+body[data-theme="dark"] .feature-modal-title,
+body[data-theme="dark"] .scrambler-parts-title,
+body[data-theme="dark"] .scrambler-part-spotlight-title,
+body[data-theme="dark"] .build-stats-title,
+body[data-theme="dark"] .build-stat-name,
+body[data-theme="dark"] .build-stat-votes {
+    color: #f5eadc;
+}
+
+body[data-theme="dark"] .description,
+body[data-theme="dark"] .bike-caption,
+body[data-theme="dark"] .quote-text,
+body[data-theme="dark"] .scrambler-parts-description,
+body[data-theme="dark"] .scrambler-guide-tip-text,
+body[data-theme="dark"] .scrambler-part-spotlight-text,
+body[data-theme="dark"] .build-stats-description,
+body[data-theme="dark"] .build-vote-text,
+body[data-theme="dark"] .build-vote-note,
+body[data-theme="dark"] .feature-modal-text {
+    color: #b8b0a7;
+}
+
+body[data-theme="dark"] .bike-caption span:first-child,
+body[data-theme="dark"] .build-vote-button,
+body[data-theme="dark"] .custom-type-hint,
+body[data-theme="dark"] .feature-modal-close {
+    color: #f5eadc;
+}
+
+body[data-theme="dark"] .bike-frame::before {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .quote-panel {
+    background: transparent;
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .hero-title {
+    color: rgba(218, 196, 173, 0.16);
+}
+
+body[data-theme="dark"] .logo-background {
+    opacity: 0.06;
+}
+
+body[data-theme="dark"] .feature-media {
+    background-color: #20252e;
+}
+
+body[data-theme="dark"] .feature-tooltip-card::after {
+    background: #1d2129;
+    border-right-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .scrambler-guide-tip {
+    background: rgba(248, 239, 226, 0.96);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .scrambler-guide-tip-title,
+body[data-theme="dark"] .scrambler-guide-tip-close {
+    color: #8c5a3c;
+}
+
+body[data-theme="dark"] .scrambler-guide-tip-text {
+    color: #6b625b;
+}
+
+body[data-theme="dark"] .scrambler-callout,
+body[data-theme="dark"] .brat-callout,
+body[data-theme="dark"] .cafe-callout,
+body[data-theme="dark"] .tracker-callout,
+body[data-theme="dark"] .bobber-callout {
+    color: #d7c9b9;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+body[data-theme="dark"] .scrambler-diagram-line {
+    stroke: rgba(242, 231, 216, 0.78);
+}
+
+body[data-theme="dark"] .scrambler-diagram-dot {
+    fill: #11151c;
+    stroke: rgba(242, 231, 216, 0.82);
+}
+
+body[data-theme="dark"] .build-stat-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .build-stat-meter {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="dark"] .build-stat-badge {
+    background: rgba(192, 133, 82, 0.18);
+    color: #efc9a9;
+}
+
+body[data-theme="dark"] .build-vote-button {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body[data-theme="dark"] .build-vote-button:hover,
+body[data-theme="dark"] .build-vote-button:focus-visible,
+body[data-theme="dark"] .build-vote-button.is-selected,
+body[data-theme="dark"] .scrambler-part-spotlight-link,
+body[data-theme="dark"] .bike-credit-tag {
+    background: #f0b57b;
+    color: #1a1412;
+    border-color: rgba(240, 181, 123, 0.24);
+}
+
+body[data-theme="dark"] .scrambler-part-spotlight-link:hover,
+body[data-theme="dark"] .scrambler-part-spotlight-link:focus-visible,
+body[data-theme="dark"] .bike-credit-tag:hover,
+body[data-theme="dark"] .bike-credit-tag:focus-visible {
+    background: #f7c896;
 }
 
 @keyframes partSpotlightIn {

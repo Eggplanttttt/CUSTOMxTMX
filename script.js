@@ -17,6 +17,9 @@ const customTypeWrap = document.querySelector(".custom-type-wrap");
 const customTypeTrigger = document.getElementById("customTypeTrigger");
 const customTypeMenu = document.getElementById("customTypeMenu");
 const customTypeHint = document.getElementById("customTypeHint");
+const themeToggle = document.getElementById("themeToggle");
+const themeToggleIcon = document.getElementById("themeToggleIcon");
+const themeToggleText = document.getElementById("themeToggleText");
 const customTypeItems = document.querySelectorAll(".custom-type-item");
 const featureCards = document.querySelectorAll(".feature-card");
 const featureTooltip = document.getElementById("featureTooltip");
@@ -100,7 +103,8 @@ const BUILD_VOTES_API_PATH = "/api/votes";
 const STORAGE_KEYS = {
     color: "tmx125_active_color",
     customType: "tmx125_active_custom_type",
-    voteVisitorId: "tmx125_vote_visitor_id"
+    voteVisitorId: "tmx125_vote_visitor_id",
+    theme: "tmx125_theme"
 };
 
 const SCRAMBLER_CREDIT_LINKS = {
@@ -935,6 +939,7 @@ const bobberPartDetails = {
 
 let activeColor = "red";
 let activeCustomType = "default";
+let activeTheme = "light";
 let activeScramblerPart = "headlight";
 let activeBratPart = "headlight";
 let activeCafePart = "seat-cowling";
@@ -976,6 +981,23 @@ const showCustomTypeHint = () => {
     }, 5000);
 };
 
+const applyTheme = () => {
+    const isDarkTheme = activeTheme === "dark";
+    document.body.dataset.theme = isDarkTheme ? "dark" : "light";
+
+    if (themeToggle) {
+        themeToggle.setAttribute("aria-pressed", String(isDarkTheme));
+    }
+
+    if (themeToggleIcon) {
+        themeToggleIcon.textContent = isDarkTheme ? "◑" : "◐";
+    }
+
+    if (themeToggleText) {
+        themeToggleText.textContent = isDarkTheme ? "Light" : "Dark";
+    }
+};
+
 if (customTypeHint) {
     showCustomTypeHint();
     customTypeHintLoopIntervalId = window.setInterval(showCustomTypeHint, 20000);
@@ -985,6 +1007,7 @@ const loadSavedState = () => {
     const savedColor = localStorage.getItem(STORAGE_KEYS.color);
     const savedCustomType = localStorage.getItem(STORAGE_KEYS.customType);
     const savedVoteVisitorId = localStorage.getItem(STORAGE_KEYS.voteVisitorId);
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
 
     if (savedColor && bikeVariants[savedColor]) {
         activeColor = savedColor;
@@ -997,11 +1020,16 @@ const loadSavedState = () => {
     if (savedVoteVisitorId) {
         voteVisitorId = savedVoteVisitorId;
     }
+
+    if (savedTheme === "dark" || savedTheme === "light") {
+        activeTheme = savedTheme;
+    }
 };
 
 const saveState = () => {
     localStorage.setItem(STORAGE_KEYS.color, activeColor);
     localStorage.setItem(STORAGE_KEYS.customType, activeCustomType);
+    localStorage.setItem(STORAGE_KEYS.theme, activeTheme);
     if (voteVisitorId) {
         localStorage.setItem(STORAGE_KEYS.voteVisitorId, voteVisitorId);
     }
@@ -1803,6 +1831,12 @@ colorButtons.forEach((button) => {
     });
 });
 
+themeToggle?.addEventListener("click", () => {
+    activeTheme = activeTheme === "dark" ? "light" : "dark";
+    applyTheme();
+    saveState();
+});
+
 const closeCustomTypeMenu = () => {
     if (!customTypeMenu || !customTypeTrigger || !customTypeWrap) {
         return;
@@ -2197,6 +2231,7 @@ document.addEventListener("dragstart", (event) => {
 });
 
 loadSavedState();
+applyTheme();
 renderBike();
 renderBuildStats();
 renderBuildVoteActions();
