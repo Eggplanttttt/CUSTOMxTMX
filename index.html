@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMX 125 Custom</title>
+    <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="showcase">
+            <div class="bike-frame">
+                <div class="custom-type-wrap">
+                    <div class="custom-type-hint" id="customTypeHint" role="note" aria-live="polite">Choose bike type here</div>
+                    <button class="custom-type-trigger" type="button" id="customTypeTrigger" aria-expanded="false" aria-controls="customTypeMenu">
+                        <span class="custom-type-trigger-label">Custom Type</span>
+                        <span class="custom-type-trigger-arrow" aria-hidden="true">▼</span>
+                    </button>
+                    <div class="custom-type-menu" id="customTypeMenu" hidden>
+                        <button class="custom-type-item" type="button" data-custom-type="default">BASE BIKE</button>
+                        <button class="custom-type-item" type="button" data-custom-type="BRAT">BRAT</button>
+                        <button class="custom-type-item" type="button" data-custom-type="CAFE RACER">CAFE RACER</button>
+                        <button class="custom-type-item" type="button" data-custom-type="SCRAMBLER">SCRAMBLER</button>
+                        <button class="custom-type-item" type="button" data-custom-type="TRACKER">TRACKER</button>
+                        <button class="custom-type-item" type="button" data-custom-type="BOBBER">BOBBER</button>
+                    </div>
+                </div>
+                <div class="logo-background" aria-hidden="true"></div>
+                <h1 class="hero-title" aria-hidden="true">Custom x TMX 125</h1>
+                <div class="hero-copy">
+                    <p class="eyebrow">BASE BIKE</p>
+                    <h1>Custom x TMX 125</h1>
+                    <p class="description">
+                        Choose a finish and explore the TMX 125 in a cleaner product-style presentation.
+                    </p>
+                </div>
+                <div class="bike-glow"></div>
+                <div class="bike-preview" id="bikePreview">
+                    <img
+                        id="bikeImage"
+                        class="bike-image"
+                        src="assets/main_motor/red.png"
+                        alt="Honda TMX 125 motorcycle preview"
+                    >
+                    <a
+                        class="bike-credit-tag"
+                        id="bikeCreditTag"
+                        href="https://www.facebook.com/LaGaraheMotorcycles/posts/honda-tmx-125-scrambler-%EF%B8%8Fthe-marlboro-project-premium-build-for-sir-nurbound-to-/587425536296681/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        hidden
+                    >
+                        La Garahe
+                    </a>
+                </div>
+                <div class="bike-caption">
+                    <span id="colorName">Candy Ruby Red</span>
+                    <span id="colorQuote">A vibrant metallic red.</span>
+                </div>
+                <div class="color-picker color-picker-center" role="radiogroup" aria-label="Choose motorcycle color">
+                    <button class="color-option is-active" type="button" data-color="red" aria-pressed="true" aria-label="Show red motorcycle">
+                        <span class="color-best-look" id="scramblerBestLook">Best Look</span>
+                        <span class="dot dot-red"></span>
+                    </button>
+                    <button class="color-option" type="button" data-color="black" aria-pressed="false" aria-label="Show black motorcycle">
+                        <span class="color-best-look" id="bobberBestLook">Best Look</span>
+                        <span class="dot dot-black"></span>
+                    </button>
+                    <button class="color-option" type="button" data-color="grey" aria-pressed="false" aria-label="Show grey motorcycle">
+                        <span class="color-best-look" id="bratBestLook">Best Look</span>
+                        <span class="color-best-look" id="cafeBestLook">Best Look</span>
+                        <span class="dot dot-greey"></span>
+                    </button>
+                    <button class="color-option" type="button" data-color="brown" aria-pressed="false" aria-label="Show brown motorcycle">
+                        <span class="color-best-look" id="trackerBestLook">Best Look</span>
+                        <span class="dot dot-brown"></span>
+                    </button>
+                </div>
+                <div class="quote-panel">
+                    <p class="quote-title" id="quoteTitle">Candy Ruby Red</p>
+                    <p class="quote-text" id="quoteText">A vibrant metallic red.</p>
+                </div>
+            </div>
+            <button class="scroll-cue scroll-cue-outside" id="scrollCue" type="button" aria-label="Scroll to features and build guide">
+                <span class="scroll-cue-text">See Features</span>
+                <span class="scroll-cue-arrow" aria-hidden="true">&#8595;</span>
+            </button>
+        </section>
+
+        <section class="features-section" aria-labelledby="featuresTitle">
+            <div class="features-wrap">
+                <h2 id="featuresTitle" class="features-heading">Features</h2>
+                <div class="features-carousel">
+                    <button class="features-arrow features-arrow-left" type="button" id="featuresPrev" aria-label="Previous features">
+                        &#8249;
+                    </button>
+                    <div class="features-viewport" id="featuresViewport">
+                        <div class="features-grid">
+                    <article class="feature-card" tabindex="0" data-feature-id="muffler" data-feature-title="Muffler" data-feature-description="Reduces engine noise from motorcycle exhaust.">
+                        <div class="feature-media feature-muffler"></div>
+                        <h3>Muffler</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="design" data-feature-title="Cafe Racer Inspired Design" data-feature-description="Minimalist yet stylish">
+                        <div class="feature-media feature-design"></div>
+                        <h3>Cafe Racer Inspired Design</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="headlight" data-feature-title="Automatic Headlight On" data-feature-description="Head-turning build and design">
+                        <div class="feature-media feature-headlight"></div>
+                        <h3>Automatic Headlight On</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="signal" data-feature-title="Signal Light (Front and Back)" data-feature-description="Stylish and durable winker/blinker">
+                        <div class="feature-media feature-signal"></div>
+                        <h3>Signal Light (Front and Back)</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="meter" data-feature-title="Informative Meter Panel" data-feature-description="Well-lit meter panel making everything more visible.">
+                        <div class="feature-media feature-meter"></div>
+                        <h3>Informative Meter Panel</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="starter" data-feature-title="Electric Starter" data-feature-description="One click and you're good to go.">
+                        <div class="feature-media feature-starter"></div>
+                        <h3>Electric Starter</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="gear" data-feature-title="5 Gear Speed" data-feature-description="Equal balance of strength and speed, ensuring a smoother rider">
+                        <div class="feature-media feature-gear"></div>
+                        <h3>5 Gear Speed</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="tire" data-feature-title="18&quot; Tire" data-feature-description="Extra protection for potholes and off-roads">
+                        <div class="feature-media feature-tire"></div>
+                        <h3>18&quot; Tire</h3>
+                    </article>
+                    <article class="feature-card" tabindex="0" data-feature-id="ohv" data-feature-title="OHV Engine" data-feature-description="For better engine performace and cleaner emission">
+                        <div class="feature-media feature-ohv"></div>
+                        <h3>OHV Engine</h3>
+                    </article>
+                        </div>
+                    </div>
+                    <button class="features-arrow features-arrow-right" type="button" id="featuresNext" aria-label="Next features">
+                        &#8250;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="scrambler-parts-section" id="scramblerPartsSection" aria-labelledby="scramblerPartsTitle" hidden>
+            <div class="scrambler-parts-wrap">
+                <div class="scrambler-parts-copy">
+                    <p class="scrambler-parts-eyebrow">Scrambler Build</p>
+                    <h2 id="scramblerPartsTitle" class="scrambler-parts-title">Parts Guide To Build</h2>
+                    <p class="scrambler-parts-description">
+                        A focused look at the red scrambler build with key callouts to guide the parts and accessories used in the setup.
+                    </p>
+                    <div class="scrambler-guide-tip" id="scramblerGuideTip" role="note" aria-live="polite">
+                        <p class="scrambler-guide-tip-title">Quick guide</p>
+                        <p class="scrambler-guide-tip-text">You can click the part names around the bike to preview each part and open its buy link.</p>
+                        <button class="scrambler-guide-tip-close" id="scramblerGuideTipClose" type="button" aria-label="Close quick guide">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scrambler-parts-stage">
+                    <div class="scrambler-bike-spotlight">
+                        <div class="scrambler-bike-shadow" aria-hidden="true"></div>
+                        <svg class="scrambler-diagram" viewBox="0 0 1000 720" aria-hidden="true" preserveAspectRatio="none">
+                            <polyline class="scrambler-diagram-line" points="146,150,315,320" />
+                            <circle class="scrambler-diagram-dot" cx="318" cy="318" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="360,322 370,206" />
+                            <circle class="scrambler-diagram-dot" cx="360" cy="326" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="164,406 290,420" />
+                            <circle class="scrambler-diagram-dot" cx="290" cy="420" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="180,550 410,480" />
+                            <circle class="scrambler-diagram-dot" cx="416" cy="478" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="460,86 545,210" />
+                            <circle class="scrambler-diagram-dot" cx="545" cy="208" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="654,100,606,266" />
+                            <circle class="scrambler-diagram-dot" cx="607" cy="266" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="804,162 639,298" />
+                            <circle class="scrambler-diagram-dot" cx="636" cy="300" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="816,280 644,360" />
+                            <circle class="scrambler-diagram-dot" cx="644" cy="360" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="822,372 620,392" />
+                            <circle class="scrambler-diagram-dot" cx="625" cy="389" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="860,470 735,470" />
+                            <circle class="scrambler-diagram-dot" cx="745" cy="470" r="6" />
+
+                            <polyline class="scrambler-diagram-line" points="836,578 650,480" />
+                            <circle class="scrambler-diagram-dot" cx="650" cy="483" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="546,608 536,492" />
+                            <circle class="scrambler-diagram-dot" cx="536" cy="492" r="5" />
+                        </svg>
+                        <button class="scrambler-callout scrambler-callout-tail-light" type="button" data-part-id="tail-light">Round Tail Light</button>
+                        <button class="scrambler-callout scrambler-callout-seat" type="button" data-part-id="seat">Classic Seat with ubend</button>
+                        <button class="scrambler-callout scrambler-callout-rim" type="button" data-part-id="rim">Wheel Rim 17"</button>
+                        <button class="scrambler-callout scrambler-callout-pipe" type="button" data-part-id="pipe">Bullet Pipe</button>
+                        <button class="scrambler-callout scrambler-callout-mirror" type="button" data-part-id="mirror">Round Side Mirror</button>
+                        <button class="scrambler-callout scrambler-callout-speedometer" type="button" data-part-id="speedometer">Round Speedometer/Odometer</button>
+                        <button class="scrambler-callout scrambler-callout-headlight" type="button" data-part-id="headlight">Round Headlight</button>
+                        <button class="scrambler-callout scrambler-callout-fender" type="button" data-part-id="fender">Classic Fender</button>
+                        <button class="scrambler-callout scrambler-callout-fork-boots" type="button" data-part-id="fork-boots">Fork Boots</button>
+                        <button class="scrambler-callout scrambler-callout-tire" type="button" data-part-id="tire">17" Tire</button>
+                        <button class="scrambler-callout scrambler-callout-fork" type="button" data-part-id="fork">TMX 155 fork</button>
+                        <button class="scrambler-callout scrambler-callout-cowling" type="button" data-part-id="cowling">Engine Guard</button>
+                        <img
+                            class="scrambler-bike-image"
+                            src="assets/scrambler/red.png"
+                            alt="Red TMX 125 scrambler build"
+                        >
+                        <div class="scrambler-part-spotlight" id="scramblerPartSpotlight" hidden>
+                            <button class="scrambler-part-spotlight-close" id="scramblerPartClose" type="button" aria-label="Close part preview">
+                                &times;
+                            </button>
+                            <div class="scrambler-part-spotlight-media" id="scramblerPartSpotlightMedia" aria-hidden="true"></div>
+                            <div class="scrambler-part-spotlight-copy">
+                                <p class="scrambler-part-spotlight-label">Selected Part</p>
+                                <h3 class="scrambler-part-spotlight-title" id="scramblerPartTitle">Round Headlight</h3>
+                                <p class="scrambler-part-spotlight-text" id="scramblerPartDescription">
+                                    Clean round headlight setup for the scrambler front end.
+                                </p>
+                                <a class="scrambler-part-spotlight-link" id="scramblerPartLink" href="#" target="_blank" rel="noopener noreferrer">
+                                    Buy Link
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="scrambler-parts-section" id="bratPartsSection" aria-labelledby="bratPartsTitle" hidden>
+            <div class="scrambler-parts-wrap">
+                <div class="scrambler-parts-copy">
+                    <p class="scrambler-parts-eyebrow">Brat Build</p>
+                    <h2 id="bratPartsTitle" class="scrambler-parts-title">Parts Guide To Build</h2>
+                    <p class="scrambler-parts-description">
+                        A focused look at the red brat build with key callouts to guide the parts and accessories used in the setup.
+                    </p>
+                    <div class="scrambler-guide-tip" id="bratGuideTip" role="note" aria-live="polite">
+                        <p class="scrambler-guide-tip-title">Quick guide</p>
+                        <p class="scrambler-guide-tip-text">You can click the part names around the bike to preview each brat part.</p>
+                        <button class="scrambler-guide-tip-close" id="bratGuideTipClose" type="button" aria-label="Close brat quick guide">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scrambler-parts-stage">
+                    <div class="scrambler-bike-spotlight brat-bike-spotlight">
+                        <div class="scrambler-bike-shadow" aria-hidden="true"></div>
+                        <svg class="scrambler-diagram" viewBox="0 0 1000 720" aria-hidden="true" preserveAspectRatio="none">
+                            <polyline class="scrambler-diagram-line" points="132,216 240,252" />
+                            <circle class="scrambler-diagram-dot" cx="234" cy="252" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="240,124 350,238" />
+                            <circle class="scrambler-diagram-dot" cx="355" cy="242" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="150,468 404,302" />
+                            <circle class="scrambler-diagram-dot" cx="402" cy="302" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="164,566 306,452" />
+                            <circle class="scrambler-diagram-dot" cx="302" cy="455" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="598,158 490,66" />
+                            <circle class="scrambler-diagram-dot" cx="599" cy="160" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="714,94 652,216" />
+                            <circle class="scrambler-diagram-dot" cx="650" cy="220" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="832,152 634,300" />
+                            <circle class="scrambler-diagram-dot" cx="635" cy="300" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="860,474 782,474" />
+                            <circle class="scrambler-diagram-dot" cx="778" cy="474" r="5" />
+                        </svg>
+                        <button class="brat-callout brat-callout-tail-light" type="button" data-brat-part-id="tail-light">Tail Light</button>
+                        <button class="brat-callout brat-callout-filter" type="button" data-brat-part-id="air-filter">Open Air Filter</button>
+                        <button class="brat-callout brat-callout-pipe" type="button" data-brat-part-id="pipe">Bottle Pipe</button>
+                        <button class="brat-callout brat-callout-speedometer" type="button" data-brat-part-id="speedometer">Classic Speedometer</button>
+                        <button class="brat-callout brat-callout-headlight" type="button" data-brat-part-id="headlight">Round Headlight</button>
+                        <button class="brat-callout brat-callout-fork-boots" type="button" data-brat-part-id="forkboots">Fork Boots</button>
+                        <button class="brat-callout brat-callout-engine" type="button" data-brat-part-id="engine">Engine Detail</button>
+                        <button class="brat-callout brat-callout-tire" type="button" data-brat-part-id="tire">Brat Tire</button>
+                        <button class="brat-callout brat-callout-seat" type="button" data-brat-part-id="seat">Brat Seat w/ubend</button>
+                        <img
+                            class="scrambler-bike-image"
+                            id="bratBikeImage"
+                            src="assets/brat/grey.png"
+                            alt="Grey TMX 125 brat build"
+                        >
+                        <div class="scrambler-part-spotlight" id="bratPartSpotlight" hidden>
+                            <button class="scrambler-part-spotlight-close" id="bratPartClose" type="button" aria-label="Close brat part preview">
+                                &times;
+                            </button>
+                            <div class="scrambler-part-spotlight-media" id="bratPartSpotlightMedia" aria-hidden="true"></div>
+                            <div class="scrambler-part-spotlight-copy">
+                                <p class="scrambler-part-spotlight-label">Selected Part</p>
+                                <h3 class="scrambler-part-spotlight-title" id="bratPartTitle">Round Headlight</h3>
+                                <p class="scrambler-part-spotlight-text" id="bratPartDescription">
+                                    Clean round headlight setup for the brat front end.
+                                </p>
+                                <a class="scrambler-part-spotlight-link" id="bratPartLink" href="#" target="_blank" rel="noopener noreferrer">
+                                    View Part
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="scrambler-parts-section" id="cafePartsSection" aria-labelledby="cafePartsTitle" hidden>
+            <div class="scrambler-parts-wrap">
+                <div class="scrambler-parts-copy">
+                    <p class="scrambler-parts-eyebrow">Cafe Racer Build</p>
+                    <h2 id="cafePartsTitle" class="scrambler-parts-title">Parts Guide To Build</h2>
+                    <p class="scrambler-parts-description">
+                        A focused look at the black cafe racer build with key callouts to guide the parts and accessories used in the setup.
+                    </p>
+                    <div class="scrambler-guide-tip" id="cafeGuideTip" role="note" aria-live="polite">
+                        <p class="scrambler-guide-tip-title">Quick guide</p>
+                        <p class="scrambler-guide-tip-text">You can click the part names around the bike to preview each cafe racer part.</p>
+                        <button class="scrambler-guide-tip-close" id="cafeGuideTipClose" type="button" aria-label="Close cafe racer quick guide">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scrambler-parts-stage">
+                    <div class="scrambler-bike-spotlight cafe-bike-spotlight">
+                        <div class="scrambler-bike-shadow" aria-hidden="true"></div>
+                        <svg class="scrambler-diagram" viewBox="0 0 1000 720" aria-hidden="true" preserveAspectRatio="none">
+                            <polyline class="scrambler-diagram-line" points="150,122 344,238" />
+                            <circle class="scrambler-diagram-dot" cx="348" cy="240" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="105,222 245,242" />
+                            <circle class="scrambler-diagram-dot" cx="245" cy="243" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="84,362 190,245" />
+                            <circle class="scrambler-diagram-dot" cx="188" cy="245" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="178,610 392,484" />
+                            <circle class="scrambler-diagram-dot" cx="395" cy="482" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="436,78 640,186" />
+                            <circle class="scrambler-diagram-dot" cx="645" cy="190" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="750,55 650,150" />
+                            <circle class="scrambler-diagram-dot" cx="650" cy="148" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="834,160 720,185" />
+                            <circle class="scrambler-diagram-dot" cx="718" cy="185" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="870,290 790,320" />
+                            <circle class="scrambler-diagram-dot" cx="786" cy="323" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="930,474 880,474" />
+                            <circle class="scrambler-diagram-dot" cx="882" cy="474" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="834,620 770,440" />
+                            <circle class="scrambler-diagram-dot" cx="770" cy="438" r="5" />
+                        </svg>
+                        <button class="cafe-callout cafe-callout-seat" type="button" data-cafe-part-id="seat">Seat w/ubend</button>
+                        <button class="cafe-callout cafe-callout-cowling" type="button" data-cafe-part-id="seat-cowling">Seat Cowling</button>
+                        <button class="cafe-callout cafe-callout-tail-light" type="button" data-cafe-part-id="tail-light">Tail Light</button>
+                        <button class="cafe-callout cafe-callout-pipe" type="button" data-cafe-part-id="pipe">Classic Pipe</button>
+                        <button class="cafe-callout cafe-callout-handlebar" type="button" data-cafe-part-id="clip-handlebar">Clip Handle Bar</button>
+                        <button class="cafe-callout cafe-callout-speedometer" type="button" data-cafe-part-id="speedometer">Speedometer</button>
+                        <button class="cafe-callout cafe-callout-headlight" type="button" data-cafe-part-id="headlight">Headlight</button>
+                        <button class="cafe-callout cafe-callout-tire" type="button" data-cafe-part-id="tire">Swallow Tire</button>
+                        <button class="cafe-callout cafe-callout-rim" type="button" data-cafe-part-id="rim">17&quot; Rim</button>
+                        <button class="cafe-callout cafe-callout-fork" type="button" data-cafe-part-id="fork">TMX 155 Fork</button>
+                        <img
+                            class="scrambler-bike-image"
+                            id="cafeBikeImage"
+                            src="assets/cafe_racer/black.png"
+                            alt="Black TMX 125 cafe racer build"
+                        >
+                        <div class="scrambler-part-spotlight" id="cafePartSpotlight" hidden>
+                            <button class="scrambler-part-spotlight-close" id="cafePartClose" type="button" aria-label="Close cafe racer part preview">
+                                &times;
+                            </button>
+                            <div class="scrambler-part-spotlight-media" id="cafePartSpotlightMedia" aria-hidden="true"></div>
+                            <div class="scrambler-part-spotlight-copy">
+                                <p class="scrambler-part-spotlight-label">Selected Part</p>
+                                <h3 class="scrambler-part-spotlight-title" id="cafePartTitle">Seat Cowling</h3>
+                                <p class="scrambler-part-spotlight-text" id="cafePartDescription">
+                                    Rear seat cowl that gives the build its signature single-seat cafe racer finish.
+                                </p>
+                                <a class="scrambler-part-spotlight-link" id="cafePartLink" href="#" target="_blank" rel="noopener noreferrer">
+                                    View Part
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="scrambler-parts-section" id="trackerPartsSection" aria-labelledby="trackerPartsTitle" hidden>
+            <div class="scrambler-parts-wrap">
+                <div class="scrambler-parts-copy">
+                    <p class="scrambler-parts-eyebrow">Tracker Build</p>
+                    <h2 id="trackerPartsTitle" class="scrambler-parts-title">Parts Guide To Build</h2>
+                    <p class="scrambler-parts-description">
+                        A focused look at the tracker build with key callouts using the same parts already shown in the features section.
+                    </p>
+                    <div class="scrambler-guide-tip" id="trackerGuideTip" role="note" aria-live="polite">
+                        <p class="scrambler-guide-tip-title">Quick guide</p>
+                        <p class="scrambler-guide-tip-text">You can click the part names around the bike to preview each tracker feature part.</p>
+                        <button class="scrambler-guide-tip-close" id="trackerGuideTipClose" type="button" aria-label="Close tracker quick guide">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scrambler-parts-stage">
+                    <div class="scrambler-bike-spotlight tracker-bike-spotlight">
+                        <div class="scrambler-bike-shadow" aria-hidden="true"></div>
+                        <svg class="scrambler-diagram" viewBox="0 0 1000 720" aria-hidden="true" preserveAspectRatio="none">
+                            <polyline class="scrambler-diagram-line" points="438,660 392,530" />
+                            <circle class="scrambler-diagram-dot" cx="393" cy="532" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="834,160 684,246" />
+                            <circle class="scrambler-diagram-dot" cx="685" cy="245" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="124,322 220,296" />
+                            <circle class="scrambler-diagram-dot" cx="226" cy="296" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="490,76 586,209" />
+                            <circle class="scrambler-diagram-dot" cx="588" cy="210" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="168,112 404,304" />
+                            <circle class="scrambler-diagram-dot" cx="409" cy="309" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="920,430 850,430" />
+                            <circle class="scrambler-diagram-dot" cx="846" cy="430" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="880,350 690,350" />
+                            <circle class="scrambler-diagram-dot" cx="686" cy="350" r="5" />
+                        </svg>
+                        <button class="tracker-callout tracker-callout-pipe" type="button" data-tracker-part-id="muffler">Bullet Pipe</button>
+                        <button class="tracker-callout tracker-callout-headlight" type="button" data-tracker-part-id="headlight">Headlight</button>
+                        <button class="tracker-callout tracker-callout-tail-light" type="button" data-tracker-part-id="signal">Tail Light</button>
+                        <button class="tracker-callout tracker-callout-speedometer" type="button" data-tracker-part-id="meter">Speedometer</button>
+                        <button class="tracker-callout tracker-callout-seat" type="button" data-tracker-part-id="starter">Seat w/ubend</button>
+                        <button class="tracker-callout tracker-callout-tire" type="button" data-tracker-part-id="tire">Tracker Tire</button>
+                        <button class="tracker-callout tracker-callout-fork" type="button" data-tracker-part-id="ohv">Inverted Fork</button>
+                        <img
+                            class="scrambler-bike-image"
+                            id="trackerBikeImage"
+                            src="assets/tracker/brown.png"
+                            alt="Brown TMX 125 tracker build"
+                        >
+                        <div class="scrambler-part-spotlight" id="trackerPartSpotlight" hidden>
+                            <button class="scrambler-part-spotlight-close" id="trackerPartClose" type="button" aria-label="Close tracker part preview">
+                                &times;
+                            </button>
+                            <div class="scrambler-part-spotlight-media" id="trackerPartSpotlightMedia" aria-hidden="true"></div>
+                            <div class="scrambler-part-spotlight-copy">
+                                <p class="scrambler-part-spotlight-label">Selected Part</p>
+                                <h3 class="scrambler-part-spotlight-title" id="trackerPartTitle">Tracker Tank</h3>
+                                <p class="scrambler-part-spotlight-text" id="trackerPartDescription">
+                                    Slimmed tank profile that supports the compact flat-track silhouette.
+                                </p>
+                                <a class="scrambler-part-spotlight-link" id="trackerPartLink" href="#" target="_blank" rel="noopener noreferrer">
+                                    View Part
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="scrambler-parts-section" id="bobberPartsSection" aria-labelledby="bobberPartsTitle" hidden>
+            <div class="scrambler-parts-wrap">
+                <div class="scrambler-parts-copy">
+                    <p class="scrambler-parts-eyebrow">Bobber Build</p>
+                    <h2 id="bobberPartsTitle" class="scrambler-parts-title">Parts Guide To Build</h2>
+                    <p class="scrambler-parts-description">
+                        A focused look at the black bobber build with key callouts using the same bobber parts already shown in the features section.
+                    </p>
+                    <div class="scrambler-guide-tip" id="bobberGuideTip" role="note" aria-live="polite">
+                        <p class="scrambler-guide-tip-title">Quick guide</p>
+                        <p class="scrambler-guide-tip-text">You can click the part names around the bike to preview each bobber part.</p>
+                        <button class="scrambler-guide-tip-close" id="bobberGuideTipClose" type="button" aria-label="Close bobber quick guide">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scrambler-parts-stage">
+                    <div class="scrambler-bike-spotlight bobber-bike-spotlight">
+                        <div class="scrambler-bike-shadow" aria-hidden="true"></div>
+                        <svg class="scrambler-diagram" viewBox="0 0 1000 720" aria-hidden="true" preserveAspectRatio="none">
+                            <polyline class="scrambler-diagram-line" points="320,138 430,368" />
+                            <circle class="scrambler-diagram-dot" cx="431" cy="372" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="440,136 530,322" />
+                            <circle class="scrambler-diagram-dot" cx="532" cy="325" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="158,166 236,264" />
+                            <circle class="scrambler-diagram-dot" cx="237" cy="265" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="154,610 424,548" />
+                            <circle class="scrambler-diagram-dot" cx="430" cy="546" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="532,86 618,198" />
+                            <circle class="scrambler-diagram-dot" cx="617" cy="196" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="452,420 92,418" />
+                            <circle class="scrambler-diagram-dot" cx="455" cy="420" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="828,156 716,298" />
+                            <circle class="scrambler-diagram-dot" cx="715" cy="299" r="5" />
+
+                            <polyline class="scrambler-diagram-line" points="870,408 834,442" />
+                            <circle class="scrambler-diagram-dot" cx="835" cy="440" r="5" />
+                        </svg>
+                        <button class="bobber-callout bobber-callout-seat" type="button" data-bobber-part-id="starter">Single Seat</button>
+                        <button class="bobber-callout bobber-callout-tank" type="button" data-bobber-part-id="design">Small Tank</button>
+                        <button class="bobber-callout bobber-callout-sissybar" type="button" data-bobber-part-id="signal">Custom Sissy Bar</button>
+                        <button class="bobber-callout bobber-callout-pipe" type="button" data-bobber-part-id="muffler">Classic Pipe</button>
+                        <button class="bobber-callout bobber-callout-handlebar" type="button" data-bobber-part-id="meter">Handlebar</button>
+                        <button class="bobber-callout bobber-callout-filter" type="button" data-bobber-part-id="ohv">Open Air Filter</button>
+                        <button class="bobber-callout bobber-callout-headlight" type="button" data-bobber-part-id="headlight">Headlight</button>
+                        <button class="bobber-callout bobber-callout-tire" type="button" data-bobber-part-id="tire">Swallow Tire</button>
+                        <img
+                            class="scrambler-bike-image"
+                            id="bobberBikeImage"
+                            src="assets/bobber/black.png"
+                            alt="Black TMX 125 bobber build"
+                        >
+                        <div class="scrambler-part-spotlight" id="bobberPartSpotlight" hidden>
+                            <button class="scrambler-part-spotlight-close" id="bobberPartClose" type="button" aria-label="Close bobber part preview">
+                                &times;
+                            </button>
+                            <div class="scrambler-part-spotlight-media" id="bobberPartSpotlightMedia" aria-hidden="true"></div>
+                            <div class="scrambler-part-spotlight-copy">
+                                <p class="scrambler-part-spotlight-label">Selected Part</p>
+                                <h3 class="scrambler-part-spotlight-title" id="bobberPartTitle">Small Tank</h3>
+                                <p class="scrambler-part-spotlight-text" id="bobberPartDescription">
+                                    Compact bobber tank setup that keeps the whole silhouette tighter and cleaner.
+                                </p>
+                                <a class="scrambler-part-spotlight-link" id="bobberPartLink" href="#" target="_blank" rel="noopener noreferrer">
+                                    View Part
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-stats-section" aria-labelledby="buildStatsTitle">
+            <div class="build-stats-wrap">
+                <div class="build-stats-copy">
+                    <p class="build-stats-eyebrow">Community Picks</p>
+                    <h2 class="build-stats-title" id="buildStatsTitle">Build Statistics</h2>
+                    <p class="build-stats-description">
+                        See which custom build people like most, then vote for the style that fits you best.
+                    </p>
+                </div>
+
+                <div class="build-stats-layout">
+                    <div class="build-stats-board" id="buildStatsBoard" aria-live="polite"></div>
+
+                    <div class="build-vote-panel">
+                        <p class="build-vote-label">Vote Your Build</p>
+                        <p class="build-vote-text" id="buildVoteText">
+                            Pick your favorite build style and your vote will update the count below.
+                        </p>
+                        <div class="build-vote-actions" id="buildVoteActions" aria-label="Vote for a build"></div>
+                        <p class="build-vote-note" id="buildVoteNote">Your vote is saved on this browser.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="feature-tooltip" id="featureTooltip" hidden>
+        <div class="feature-tooltip-card" role="dialog" aria-modal="false" aria-labelledby="featureTooltipTitle">
+            <button class="feature-modal-close" type="button" id="featureModalClose" aria-label="Close feature details">
+                &times;
+            </button>
+            <p class="feature-modal-label">Feature Detail</p>
+            <h3 class="feature-modal-title" id="featureTooltipTitle">Muffler</h3>
+            <p class="feature-modal-text" id="featureTooltipText">Reduces engine noise from motorcycle exhaust.</p>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
