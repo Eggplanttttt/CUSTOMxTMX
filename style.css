@@ -26,16 +26,123 @@ body {
     transition: background 0.35s ease, color 0.35s ease;
 }
 
+body.intro-active {
+    overflow: hidden;
+}
+
 img {
     max-width: 100%;
     display: block;
     -webkit-user-drag: none;
 }
 
+.intro-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 18%, rgba(110, 70, 30, 0.12), transparent 24%),
+        linear-gradient(180deg, #020101 0%, #0b0705 46%, #010101 100%);
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.intro-smoke-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+.intro-splash::before,
+.intro-splash::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(170, 140, 102, 0.10), rgba(170, 140, 102, 0) 72%);
+    filter: blur(34px);
+    pointer-events: none;
+}
+
+.intro-splash::before {
+    width: min(44vw, 520px);
+    height: min(44vw, 520px);
+    top: 10%;
+    left: -6%;
+    animation: introGlowDrift 9s ease-in-out infinite;
+}
+
+.intro-splash::after {
+    width: min(36vw, 420px);
+    height: min(36vw, 420px);
+    right: -4%;
+    bottom: 8%;
+    animation: introGlowDrift 11s ease-in-out infinite reverse;
+}
+
+.intro-splash-copy {
+    position: relative;
+    z-index: 2;
+    width: min(90vw, 860px);
+    padding: 24px;
+    display: grid;
+    gap: 14px;
+    justify-items: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    filter: blur(6px);
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+}
+
+body.intro-caption-visible .intro-splash-copy {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.intro-splash-label {
+    margin: 0;
+    color: rgba(228, 214, 188, 0.72);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+}
+
+.intro-splash-title {
+    margin: 0;
+    max-width: 12ch;
+    font-family: "Syne", sans-serif;
+    font-size: clamp(3.2rem, 9vw, 6.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: #efe3cf;
+    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.52);
+}
+
 .page-shell {
     padding: 20px 24px 48px;
     display: grid;
     justify-items: center;
+    transition: opacity 0.85s ease, transform 0.85s ease, filter 0.85s ease;
+}
+
+body.intro-active .page-shell {
+    opacity: 0;
+    transform: scale(1.02);
+    filter: blur(8px);
+}
+
+body.intro-complete .intro-splash {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .hero {
@@ -621,6 +728,125 @@ h1 {
     }
     50% {
         transform: translateY(-6px);
+    }
+}
+
+@keyframes introCopyIn {
+    from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes introCaptionReveal {
+    from {
+        opacity: 0;
+        transform: translateY(26px) scale(0.98);
+        filter: blur(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes introSmokeSweepOne {
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.9);
+        opacity: 0;
+    }
+    12% {
+        opacity: 0.82;
+    }
+    72% {
+        opacity: 0.62;
+    }
+    100% {
+        transform: translate3d(275%, 2%, 0) scale(1.08);
+        opacity: 0;
+    }
+}
+
+@keyframes introSmokeSweepTwo {
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.96);
+        opacity: 0;
+    }
+    14% {
+        opacity: 0.7;
+    }
+    76% {
+        opacity: 0.54;
+    }
+    100% {
+        transform: translate3d(255%, -2%, 0) scale(1.06);
+        opacity: 0;
+    }
+}
+
+@keyframes introSmokeSweepThree {
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.88);
+        opacity: 0;
+    }
+    16% {
+        opacity: 0.52;
+    }
+    70% {
+        opacity: 0.34;
+    }
+    100% {
+        transform: translate3d(286%, -1%, 0) scale(1.04);
+        opacity: 0;
+    }
+}
+
+@keyframes introSmokeSweepFour {
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.84);
+        opacity: 0;
+    }
+    14% {
+        opacity: 0.42;
+    }
+    68% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate3d(295%, 4%, 0) scale(1.08);
+        opacity: 0;
+    }
+}
+
+@keyframes introSmokeWave {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0;
+    }
+    12% {
+        opacity: 0.56;
+    }
+    74% {
+        opacity: 0.28;
+    }
+    100% {
+        transform: translate3d(205%, 0, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes introGlowDrift {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(6%, -4%, 0) scale(1.08);
     }
 }
 
@@ -2056,6 +2282,21 @@ body[data-theme="dark"] .bike-credit-tag:focus-visible {
         padding: 12px 12px 28px;
     }
 
+    .intro-splash-copy {
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .intro-splash-label {
+        font-size: 0.74rem;
+        letter-spacing: 0.28em;
+    }
+
+    .intro-splash-title {
+        max-width: 10ch;
+        font-size: clamp(2.5rem, 13vw, 4rem);
+    }
+
     .bike-frame {
         min-height: auto;
         padding: 18px 16px 16px;
@@ -2309,5 +2550,23 @@ body[data-theme="dark"] .bike-credit-tag:focus-visible {
         flex-basis: 240px;
         min-width: 240px;
         max-width: 240px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro-splash,
+    .page-shell,
+    .intro-splash-copy,
+    .intro-splash::before,
+    .intro-splash::after,
+    .intro-smoke-canvas {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .intro-splash-copy {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
     }
 }

@@ -7,6 +7,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
 const bikeImage = document.getElementById("bikeImage");
+const introSplash = document.getElementById("introSplash");
+const introSmokeCanvas = document.getElementById("introSmokeCanvas");
 const colorName = document.getElementById("colorName");
 const colorQuote = document.getElementById("colorQuote");
 const quoteTitle = document.getElementById("quoteTitle");
@@ -1064,6 +1066,176 @@ const saveState = () => {
     if (voteVisitorId) {
         localStorage.setItem(STORAGE_KEYS.voteVisitorId, voteVisitorId);
     }
+};
+
+const createIntroSmokeEffect = () => {
+    if (!introSmokeCanvas) {
+        return { stop: () => {} };
+    }
+
+    const context = introSmokeCanvas.getContext("2d");
+
+    if (!context) {
+        return { stop: () => {} };
+    }
+
+    const particles = [];
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const particleCount = prefersReducedMotion ? 14 : 56;
+    let animationFrameId = 0;
+    let isStopped = false;
+    let width = 0;
+    let height = 0;
+    let lastTimestamp = 0;
+
+    const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        introSmokeCanvas.width = Math.round(width * dpr);
+        introSmokeCanvas.height = Math.round(height * dpr);
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.scale(dpr, dpr);
+    };
+
+    const resetParticle = (particle, progress = Math.random()) => {
+        const baseBandY = height * (0.22 + (Math.random() * 0.5));
+        particle.x = (-width * 0.45) + ((width * 1.8) * progress);
+        particle.y = baseBandY + ((Math.random() - 0.5) * height * 0.08);
+        particle.radius = Math.max(140, width * (0.11 + (Math.random() * 0.1)));
+        particle.speed = width * (0.045 + (Math.random() * 0.028));
+        particle.drift = (Math.random() - 0.5) * 8;
+        particle.alpha = 0.08 + (Math.random() * 0.12);
+        particle.blurLift = (Math.random() * 12) - 6;
+    };
+
+    const seedParticles = () => {
+        particles.length = 0;
+        for (let index = 0; index < particleCount; index += 1) {
+            const particle = {};
+            resetParticle(particle, index / particleCount);
+            particles.push(particle);
+        }
+    };
+
+    const drawParticle = (particle) => {
+        const gradient = context.createRadialGradient(
+            particle.x,
+            particle.y,
+            particle.radius * 0.1,
+            particle.x,
+            particle.y,
+            particle.radius
+        );
+
+        gradient.addColorStop(0, `rgba(228, 220, 206, ${particle.alpha})`);
+        gradient.addColorStop(0.38, `rgba(170, 156, 136, ${particle.alpha * 0.7})`);
+        gradient.addColorStop(0.78, `rgba(62, 54, 46, ${particle.alpha * 0.2})`);
+        gradient.addColorStop(1, "rgba(8, 6, 5, 0)");
+
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fill();
+    };
+
+    const render = (timestamp) => {
+        if (isStopped) {
+            return;
+        }
+
+        if (!lastTimestamp) {
+            lastTimestamp = timestamp;
+        }
+
+        const delta = Math.min((timestamp - lastTimestamp) / 1000, 0.033);
+        lastTimestamp = timestamp;
+
+        context.clearRect(0, 0, width, height);
+
+        const ambientGlow = context.createRadialGradient(
+            width * 0.5,
+            height * 0.5,
+            0,
+            width * 0.5,
+            height * 0.5,
+            Math.max(width, height) * 0.65
+        );
+        ambientGlow.addColorStop(0, "rgba(70, 44, 18, 0.06)");
+        ambientGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        context.fillStyle = ambientGlow;
+        context.fillRect(0, 0, width, height);
+
+        particles.forEach((particle) => {
+            particle.x += particle.speed * delta;
+            particle.y += (particle.drift + particle.blurLift) * delta;
+
+            if (particle.x - particle.radius > width * 1.2) {
+                resetParticle(particle, 0);
+            }
+
+            drawParticle(particle);
+        });
+
+        context.fillStyle = "rgba(0, 0, 0, 0.34)";
+        context.fillRect(0, 0, width, height);
+
+        animationFrameId = window.requestAnimationFrame(render);
+    };
+
+    resize();
+    seedParticles();
+    animationFrameId = window.requestAnimationFrame(render);
+    window.addEventListener("resize", resize);
+
+    return {
+        stop: () => {
+            isStopped = true;
+            window.cancelAnimationFrame(animationFrameId);
+            window.removeEventListener("resize", resize);
+            context.clearRect(0, 0, width, height);
+        }
+    };
+};
+
+const startIntroSequence = () => {
+    if (!introSplash) {
+        document.body.classList.remove("intro-active");
+        document.body.classList.add("intro-complete");
+        return;
+    }
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const captionDelay = prefersReducedMotion ? 0 : 2400;
+    const introDuration = prefersReducedMotion ? 400 : 8200;
+    const fadeDuration = prefersReducedMotion ? 0 : 1100;
+
+    let isFinished = false;
+    const smokeEffect = createIntroSmokeEffect();
+
+    document.body.classList.add("intro-active");
+    document.body.classList.remove("intro-complete", "intro-caption-visible");
+
+    const finishIntro = () => {
+        if (isFinished) {
+            return;
+        }
+
+        isFinished = true;
+        smokeEffect.stop();
+        document.body.classList.add("intro-complete");
+        document.body.classList.remove("intro-active");
+
+        window.setTimeout(() => {
+            introSplash.remove();
+        }, fadeDuration);
+    };
+
+    window.setTimeout(() => {
+        document.body.classList.add("intro-caption-visible");
+    }, captionDelay);
+
+    window.setTimeout(finishIntro, introDuration);
 };
 
 const animateWindowScrollTo = (targetY, duration = 1400) => {
@@ -2331,3 +2503,9 @@ renderBuildStats();
 renderBuildVoteActions();
 updateScrollCueState();
 syncBuildVotesFromFirebase();
+
+if (document.readyState === "complete") {
+    startIntroSequence();
+} else {
+    window.addEventListener("load", startIntroSequence, { once: true });
+}
