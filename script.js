@@ -104,7 +104,8 @@ const STORAGE_KEYS = {
     color: "tmx125_active_color",
     customType: "tmx125_active_custom_type",
     voteVisitorId: "tmx125_vote_visitor_id",
-    theme: "tmx125_theme"
+    theme: "tmx125_theme",
+    hasVisited: "tmx125_has_visited"
 };
 
 const SCRAMBLER_CREDIT_LINKS = {
@@ -1004,16 +1005,22 @@ if (customTypeHint) {
 }
 
 const loadSavedState = () => {
+    const hasVisited = localStorage.getItem(STORAGE_KEYS.hasVisited) === "true";
     const savedColor = localStorage.getItem(STORAGE_KEYS.color);
     const savedCustomType = localStorage.getItem(STORAGE_KEYS.customType);
     const savedVoteVisitorId = localStorage.getItem(STORAGE_KEYS.voteVisitorId);
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
 
-    if (savedColor && bikeVariants[savedColor]) {
+    if (!hasVisited) {
+        activeColor = "red";
+        activeCustomType = "default";
+    }
+
+    if (hasVisited && savedColor && bikeVariants[savedColor]) {
         activeColor = savedColor;
     }
 
-    if (savedCustomType && customTypeVariants[savedCustomType]) {
+    if (hasVisited && savedCustomType && customTypeVariants[savedCustomType]) {
         activeCustomType = savedCustomType;
     }
 
@@ -1030,6 +1037,7 @@ const saveState = () => {
     localStorage.setItem(STORAGE_KEYS.color, activeColor);
     localStorage.setItem(STORAGE_KEYS.customType, activeCustomType);
     localStorage.setItem(STORAGE_KEYS.theme, activeTheme);
+    localStorage.setItem(STORAGE_KEYS.hasVisited, "true");
     if (voteVisitorId) {
         localStorage.setItem(STORAGE_KEYS.voteVisitorId, voteVisitorId);
     }
