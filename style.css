@@ -1769,6 +1769,20 @@ h1 {
     outline: none;
 }
 
+.site-credit {
+    width: min(1180px, 100%);
+    padding: 18px 12px 4px;
+    text-align: center;
+}
+
+.site-credit p {
+    margin: 0;
+    color: #5f5750;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 body[data-theme="dark"] {
     color: #efe6d8;
     background: linear-gradient(180deg, #15181e 0%, #241c1a 100%);
@@ -1845,6 +1859,7 @@ body[data-theme="dark"] .build-stats-description,
 body[data-theme="dark"] .build-vote-text,
 body[data-theme="dark"] .build-vote-note,
 body[data-theme="dark"] .build-visitor-count,
+body[data-theme="dark"] .site-credit p,
 body[data-theme="dark"] .feature-modal-text {
     color: #b8b0a7;
 }
