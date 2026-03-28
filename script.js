@@ -1361,7 +1361,7 @@ const renderBuildVoteActions = () => {
             ? "Live visitor and vote counts will appear once Firebase connects."
             : activeBuildVote
             ? "Your vote is saved to Firebase and updates the build ranking instantly."
-            : "Your vote will be saved to Firebase.";
+            : "Your vote will be saved to the system.";
     }
 
     if (buildVisitorCount) {
