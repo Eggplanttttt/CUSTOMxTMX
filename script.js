@@ -1,3 +1,11 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import {
+    getFirestore,
+    doc,
+    runTransaction,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
 const bikeImage = document.getElementById("bikeImage");
 const colorName = document.getElementById("colorName");
 const colorQuote = document.getElementById("colorQuote");
@@ -90,6 +98,7 @@ const buildStatsBoard = document.getElementById("buildStatsBoard");
 const buildVoteActions = document.getElementById("buildVoteActions");
 const buildVoteText = document.getElementById("buildVoteText");
 const buildVoteNote = document.getElementById("buildVoteNote");
+const buildVisitorCount = document.getElementById("buildVisitorCount");
 const redColorButton = document.querySelector('.color-option[data-color="red"]');
 const blackColorButton = document.querySelector('.color-option[data-color="black"]');
 const greyColorButton = document.querySelector('.color-option[data-color="grey"]');
@@ -99,7 +108,6 @@ const bratBestLook = document.getElementById("bratBestLook");
 const cafeBestLook = document.getElementById("cafeBestLook");
 const trackerBestLook = document.getElementById("trackerBestLook");
 const bobberBestLook = document.getElementById("bobberBestLook");
-const BUILD_VOTES_API_PATH = "/api/votes";
 const STORAGE_KEYS = {
     color: "tmx125_active_color",
     customType: "tmx125_active_custom_type",
@@ -107,6 +115,20 @@ const STORAGE_KEYS = {
     theme: "tmx125_theme",
     hasVisited: "tmx125_has_visited"
 };
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDv1g6NAcKFHjr8OfwNESEyMepheragOTg",
+    authDomain: "custom-cb0a2.firebaseapp.com",
+    projectId: "custom-cb0a2",
+    storageBucket: "custom-cb0a2.firebasestorage.app",
+    messagingSenderId: "770596638192",
+    appId: "1:770596638192:web:b118edab0cc984123ae135",
+    measurementId: "G-CQGSBJLG5F"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const buildStatsRef = doc(db, "siteStats", "buildStats");
 
 const SCRAMBLER_CREDIT_LINKS = {
     red: "https://www.facebook.com/LaGaraheMotorcycles/posts/honda-tmx-125-scrambler-%EF%B8%8Fthe-marlboro-project-premium-build-for-sir-nurbound-to-/587425536296681/",
@@ -957,6 +979,7 @@ let activeBuildVote = "";
 let voteVisitorId = "";
 let isBuildVoteApiReady = false;
 let isBuildVoteSubmitting = false;
+let siteVisitorCount = 0;
 let scramblerBestLookIntervalId = null;
 let scramblerBestLookTimeoutId = null;
 let bratBestLookIntervalId = null;
@@ -1267,6 +1290,18 @@ const getSortedBuildVotes = () => BUILD_VOTE_ORDER
     }))
     .sort((left, right) => right.votes - left.votes);
 
+const getTotalVisitorVotes = () => BUILD_VOTE_ORDER.reduce(
+    (total, buildId) => total + Number(buildVotes[buildId] || 0),
+    0
+);
+
+const getVisitorVoteRef = (visitorId) => doc(db, "visitors", visitorId);
+
+const normalizeBuildVotes = (rawVotes) => BUILD_VOTE_ORDER.reduce((accumulator, buildId) => {
+    accumulator[buildId] = Number(rawVotes?.[buildId] || 0);
+    return accumulator;
+}, {});
+
 const renderBuildStats = () => {
     if (!buildStatsBoard) {
         return;
@@ -1315,7 +1350,7 @@ const renderBuildVoteActions = () => {
 
     if (buildVoteText) {
         buildVoteText.textContent = !isBuildVoteApiReady
-            ? "Connect the Vercel vote API first so this section can save shared survey results."
+            ? "Connecting to Firebase vote storage..."
             : activeBuildVote
             ? `Your current vote is ${getBuildLabel(activeBuildVote)}. You can still change it anytime.`
             : "Pick your favorite build style and your vote will update the count below.";
@@ -1323,29 +1358,61 @@ const renderBuildVoteActions = () => {
 
     if (buildVoteNote) {
         buildVoteNote.textContent = !isBuildVoteApiReady
-            ? "This project now expects a Vercel serverless function with Redis storage for shared counting."
+            ? "Live visitor and vote counts will appear once Firebase connects."
             : activeBuildVote
-            ? "Your vote is saved on this browser and updates the build ranking instantly."
-            : "Your vote is saved on this browser.";
+            ? "Your vote is saved to Firebase and updates the build ranking instantly."
+            : "Your vote will be saved to Firebase.";
+    }
+
+    if (buildVisitorCount) {
+        buildVisitorCount.textContent = `${siteVisitorCount} visitor${siteVisitorCount === 1 ? "" : "s"}`;
     }
 };
 
-const syncBuildVotesFromApi = async () => {
+const syncBuildVotesFromFirebase = async () => {
     const visitorId = ensureVoteVisitorId();
 
     try {
-        const response = await fetch(`${BUILD_VOTES_API_PATH}?visitorId=${encodeURIComponent(visitorId)}`, {
-            method: "GET",
-            headers: {
-                Accept: "application/json"
+        const payload = await runTransaction(db, async (transaction) => {
+            const visitorRef = getVisitorVoteRef(visitorId);
+            const statsSnapshot = await transaction.get(buildStatsRef);
+            const visitorSnapshot = await transaction.get(visitorRef);
+
+            const existingStats = statsSnapshot.exists() ? statsSnapshot.data() : {};
+            const buildVoteMap = normalizeBuildVotes(existingStats.buildVotes);
+            let visitorCount = Number(existingStats.visitorCount || 0);
+            let visitorVote = visitorSnapshot.exists() ? (visitorSnapshot.data()?.vote || "") : "";
+            let shouldWriteStats = !statsSnapshot.exists();
+
+            if (!visitorSnapshot.exists()) {
+                visitorCount += 1;
+                shouldWriteStats = true;
+                transaction.set(visitorRef, {
+                    vote: "",
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
             }
+
+            if (shouldWriteStats) {
+                transaction.set(buildStatsRef, {
+                    buildVotes: buildVoteMap,
+                    visitorCount,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+            }
+
+            if (!BUILD_VOTE_ORDER.includes(visitorVote)) {
+                visitorVote = "";
+            }
+
+            return {
+                votes: buildVoteMap,
+                visitorVote,
+                visitorCount
+            };
         });
 
-        if (!response.ok) {
-            throw new Error(`Vote sync failed with status ${response.status}`);
-        }
-
-        const payload = await response.json();
         buildVotes = {
             ...DEFAULT_BUILD_VOTES,
             ...(payload.votes || {})
@@ -1353,6 +1420,7 @@ const syncBuildVotesFromApi = async () => {
         activeBuildVote = payload.visitorVote && BUILD_VOTE_ORDER.includes(payload.visitorVote)
             ? payload.visitorVote
             : "";
+        siteVisitorCount = Number(payload.visitorCount || 0);
         isBuildVoteApiReady = true;
     } catch (error) {
         isBuildVoteApiReady = false;
@@ -1374,23 +1442,48 @@ const submitBuildVote = async (buildId) => {
     isBuildVoteSubmitting = true;
 
     try {
-        const response = await fetch(BUILD_VOTES_API_PATH, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json"
-            },
-            body: JSON.stringify({
-                visitorId: ensureVoteVisitorId(),
-                buildId
-            })
+        const payload = await runTransaction(db, async (transaction) => {
+            const visitorId = ensureVoteVisitorId();
+            const visitorRef = getVisitorVoteRef(visitorId);
+            const statsSnapshot = await transaction.get(buildStatsRef);
+            const visitorSnapshot = await transaction.get(visitorRef);
+
+            const existingStats = statsSnapshot.exists() ? statsSnapshot.data() : {};
+            const buildVoteMap = normalizeBuildVotes(existingStats.buildVotes);
+            let visitorCount = Number(existingStats.visitorCount || 0);
+            let previousVote = visitorSnapshot.exists() ? (visitorSnapshot.data()?.vote || "") : "";
+
+            if (!visitorSnapshot.exists()) {
+                visitorCount += 1;
+            }
+
+            if (BUILD_VOTE_ORDER.includes(previousVote) && previousVote !== buildId) {
+                buildVoteMap[previousVote] = Math.max(0, Number(buildVoteMap[previousVote] || 0) - 1);
+            }
+
+            if (previousVote !== buildId) {
+                buildVoteMap[buildId] = Number(buildVoteMap[buildId] || 0) + 1;
+                previousVote = buildId;
+            }
+
+            transaction.set(visitorRef, {
+                vote: previousVote,
+                updatedAt: serverTimestamp(),
+                createdAt: visitorSnapshot.exists() ? (visitorSnapshot.data()?.createdAt || serverTimestamp()) : serverTimestamp()
+            }, { merge: true });
+
+            transaction.set(buildStatsRef, {
+                buildVotes: buildVoteMap,
+                visitorCount,
+                updatedAt: serverTimestamp()
+            }, { merge: true });
+
+            return {
+                votes: buildVoteMap,
+                visitorVote: previousVote,
+                visitorCount
+            };
         });
-
-        if (!response.ok) {
-            throw new Error(`Vote submit failed with status ${response.status}`);
-        }
-
-        const payload = await response.json();
         buildVotes = {
             ...DEFAULT_BUILD_VOTES,
             ...(payload.votes || {})
@@ -1398,6 +1491,7 @@ const submitBuildVote = async (buildId) => {
         activeBuildVote = payload.visitorVote && BUILD_VOTE_ORDER.includes(payload.visitorVote)
             ? payload.visitorVote
             : buildId;
+        siteVisitorCount = Number(payload.visitorCount || 0);
         isBuildVoteApiReady = true;
     } catch (error) {
         isBuildVoteApiReady = false;
@@ -2244,4 +2338,4 @@ renderBike();
 renderBuildStats();
 renderBuildVoteActions();
 updateScrollCueState();
-syncBuildVotesFromApi();
+syncBuildVotesFromFirebase();

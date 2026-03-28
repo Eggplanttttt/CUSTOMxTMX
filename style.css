@@ -1727,6 +1727,16 @@ h1 {
     line-height: 1.5;
 }
 
+.build-visitor-count {
+    margin-top: 2px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
+    color: #2b1e1b;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
 .build-vote-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1834,6 +1844,7 @@ body[data-theme="dark"] .scrambler-part-spotlight-text,
 body[data-theme="dark"] .build-stats-description,
 body[data-theme="dark"] .build-vote-text,
 body[data-theme="dark"] .build-vote-note,
+body[data-theme="dark"] .build-visitor-count,
 body[data-theme="dark"] .feature-modal-text {
     color: #b8b0a7;
 }
