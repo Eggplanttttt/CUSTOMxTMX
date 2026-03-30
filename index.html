@@ -12,11 +12,18 @@
 </head>
 <body class="intro-active">
     <div class="intro-splash" id="introSplash" aria-hidden="true">
-        <canvas class="intro-smoke-canvas" id="introSmokeCanvas" aria-hidden="true"></canvas>
-        <div class="intro-splash-copy">
-            <p class="intro-splash-label">TMX 125 Custom</p>
-            <h2 class="intro-splash-title">Built for Classic Ride Lovers</h2>
-        </div>
+        <video
+            class="intro-video"
+            id="introVideo"
+            autoplay
+            muted
+            playsinline
+            preload="none"
+            data-desktop-src="assets/intro/Built for Classic Ride Lovers.mp4"
+            data-mobile-src="assets/intro/cp1.mp4"
+        >
+            <source type="video/mp4">
+        </video>
     </div>
     <main class="page-shell">
         <section class="showcase">

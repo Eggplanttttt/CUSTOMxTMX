@@ -28,6 +28,7 @@ body {
 
 body.intro-active {
     overflow: hidden;
+    background: #000;
 }
 
 img {
@@ -38,92 +39,43 @@ img {
 
 .intro-splash {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     z-index: 2000;
-    display: grid;
-    place-items: center;
+    display: block;
     overflow: hidden;
-    background:
-        radial-gradient(circle at 50% 18%, rgba(110, 70, 30, 0.12), transparent 24%),
-        linear-gradient(180deg, #020101 0%, #0b0705 46%, #010101 100%);
+    background: #000;
     transition: opacity 1s ease, visibility 1s ease;
 }
 
-.intro-smoke-canvas {
+.intro-video {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: block;
+    object-fit: cover;
+    object-position: center 40%;
+    background: #000;
+    opacity: 0;
+    filter: none;
     pointer-events: none;
+    transform: scale(1.08);
+    transform-origin: center center;
+    transition: opacity 0.2s ease;
+}
+
+.intro-video.is-ready {
+    opacity: 1;
 }
 
 .intro-splash::before,
 .intro-splash::after {
-    content: "";
-    position: absolute;
-    inset: auto;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(170, 140, 102, 0.10), rgba(170, 140, 102, 0) 72%);
-    filter: blur(34px);
-    pointer-events: none;
-}
-
-.intro-splash::before {
-    width: min(44vw, 520px);
-    height: min(44vw, 520px);
-    top: 10%;
-    left: -6%;
-    animation: introGlowDrift 9s ease-in-out infinite;
-}
-
-.intro-splash::after {
-    width: min(36vw, 420px);
-    height: min(36vw, 420px);
-    right: -4%;
-    bottom: 8%;
-    animation: introGlowDrift 11s ease-in-out infinite reverse;
-}
-
-.intro-splash-copy {
-    position: relative;
-    z-index: 2;
-    width: min(90vw, 860px);
-    padding: 24px;
-    display: grid;
-    gap: 14px;
-    justify-items: center;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(22px) scale(0.985);
-    filter: blur(6px);
-    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
-}
-
-body.intro-caption-visible .intro-splash-copy {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-}
-
-.intro-splash-label {
-    margin: 0;
-    color: rgba(228, 214, 188, 0.72);
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.38em;
-    text-transform: uppercase;
-}
-
-.intro-splash-title {
-    margin: 0;
-    max-width: 12ch;
-    font-family: "Syne", sans-serif;
-    font-size: clamp(3.2rem, 9vw, 6.8rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    color: #efe3cf;
-    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.52);
+    content: none;
 }
 
 .page-shell {
@@ -2282,19 +2234,13 @@ body[data-theme="dark"] .bike-credit-tag:focus-visible {
         padding: 12px 12px 28px;
     }
 
-    .intro-splash-copy {
-        gap: 10px;
-        padding: 20px;
-    }
-
-    .intro-splash-label {
-        font-size: 0.74rem;
-        letter-spacing: 0.28em;
-    }
-
-    .intro-splash-title {
-        max-width: 10ch;
-        font-size: clamp(2.5rem, 13vw, 4rem);
+    .intro-video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center top;
+        opacity: 1;
+        transform: none;
     }
 
     .bike-frame {
@@ -2556,17 +2502,10 @@ body[data-theme="dark"] .bike-credit-tag:focus-visible {
 @media (prefers-reduced-motion: reduce) {
     .intro-splash,
     .page-shell,
-    .intro-splash-copy,
     .intro-splash::before,
     .intro-splash::after,
-    .intro-smoke-canvas {
+    .intro-video {
         animation: none !important;
         transition: none !important;
-    }
-
-    .intro-splash-copy {
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
     }
 }
