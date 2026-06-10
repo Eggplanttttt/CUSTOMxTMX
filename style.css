@@ -491,6 +491,7 @@ h1 {
     align-self: end;
     width: min(100%, 880px);
     margin: -28px auto -8px;
+    overflow: hidden;
 }
 
 .bike-image {
@@ -500,7 +501,93 @@ h1 {
     max-height: 48vh;
     margin: 0 auto;
     object-fit: contain;
-    animation: fadeIn 0.35s ease;
+    transform: translateX(0);
+    opacity: 1;
+    will-change: transform, opacity;
+}
+
+.bike-image.is-carousel-hidden {
+    opacity: 0;
+}
+
+.bike-carousel-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bike-carousel-item {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-height: 48vh;
+    margin: 0 auto;
+    object-fit: contain;
+    transform-origin: 50% 82%;
+    will-change: transform, opacity;
+}
+
+.bike-carousel-item.is-scrambler-build {
+    width: min(100%, 112%);
+    max-height: 58vh;
+}
+
+.bike-carousel-item.is-cafe-grey-build {
+    width: min(100%, 80%);
+    max-height: 38vh;
+    margin-top: 26px;
+}
+
+.bike-image.is-slide-in,
+.bike-image-clone.is-slide-out {
+    transition: transform 0.42s cubic-bezier(0.22, 0.72, 0.18, 1), opacity 0.42s ease;
+}
+
+.bike-image.is-slide-in {
+    transform: translateX(var(--bike-slide-in, 100%));
+    opacity: 0;
+}
+
+.bike-image.is-slide-in.is-active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.bike-image-clone {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    max-height: 48vh;
+    margin: 0 auto;
+    object-fit: contain;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.bike-image-clone.is-scrambler-build {
+    width: min(100%, 112%);
+    max-height: 58vh;
+}
+
+.bike-image-clone.is-cafe-grey-build {
+    width: min(100%, 80%);
+    max-height: 38vh;
+    margin-top: 26px;
+}
+
+.bike-image-clone.is-slide-out {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.bike-image-clone.is-slide-out.is-active {
+    transform: translateX(var(--bike-slide-out, -100%));
+    opacity: 0;
 }
 
 .bike-image.is-scrambler-build {
@@ -2504,7 +2591,10 @@ body[data-theme="dark"] .bike-credit-tag:focus-visible {
     .page-shell,
     .intro-splash::before,
     .intro-splash::after,
-    .intro-video {
+    .intro-video,
+    .bike-image,
+    .bike-image-clone,
+    .bike-carousel-item {
         animation: none !important;
         transition: none !important;
     }

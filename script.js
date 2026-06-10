@@ -243,6 +243,31 @@ const customTypeVariants = {
     }
 };
 
+const preloadBikeImages = () => {
+    const imageSources = new Set();
+
+    Object.values(bikeVariants).forEach((variant) => {
+        if (variant.src) {
+            imageSources.add(variant.src);
+        }
+    });
+
+    Object.values(customTypeVariants).forEach((variant) => {
+        if (variant.src) {
+            imageSources.add(variant.src);
+        }
+
+        Object.values(variant.srcByColor || {}).forEach((src) => {
+            imageSources.add(src);
+        });
+    });
+
+    imageSources.forEach((src) => {
+        const image = new Image();
+        image.src = src;
+    });
+};
+
 const BUILD_VOTE_ORDER = ["SCRAMBLER", "CAFE RACER", "BRAT", "TRACKER", "BOBBER"];
 const DEFAULT_BUILD_VOTES = {
     SCRAMBLER: 0,
@@ -1951,7 +1976,112 @@ const renderBobberPartSpotlight = () => {
     });
 };
 
-const renderBike = () => {
+let bikeSwapAnimationToken = 0;
+
+const cleanBikeSlideClasses = (element) => {
+    element?.classList.remove("is-slide-in", "is-slide-out", "is-active", "is-carousel-hidden");
+};
+
+const animateBikeSwap = (previousState, direction = 1) => {
+    if (!bikePreview || !bikeImage || !previousState?.src || previousState.src === bikeImage.src) {
+        return;
+    }
+
+    bikeSwapAnimationToken += 1;
+    const animationToken = bikeSwapAnimationToken;
+    const incomingOffset = direction > 0 ? "120%" : "-120%";
+    const outgoingOffset = direction > 0 ? "-120%" : "120%";
+    const incomingCurve = direction > 0 ? "18%" : "-18%";
+    const outgoingCurve = direction > 0 ? "-18%" : "18%";
+    const incomingRotation = direction > 0 ? "-12deg" : "12deg";
+    const outgoingRotation = direction > 0 ? "12deg" : "-12deg";
+
+    bikePreview.querySelectorAll(".bike-carousel-stage, .bike-image-clone").forEach((element) => element.remove());
+    cleanBikeSlideClasses(bikeImage);
+
+    const stage = document.createElement("div");
+    stage.className = "bike-carousel-stage";
+
+    const outgoingImage = document.createElement("img");
+    outgoingImage.src = previousState.src;
+    outgoingImage.alt = "";
+    outgoingImage.className = previousState.className
+        .replace(/\bis-slide-in\b|\bis-slide-out\b|\bis-active\b|\bis-carousel-hidden\b|\bbike-image-clone\b|\bbike-carousel-item\b/g, "")
+        .trim();
+    outgoingImage.classList.add("bike-carousel-item", "bike-carousel-outgoing");
+    outgoingImage.setAttribute("aria-hidden", "true");
+
+    const incomingImage = document.createElement("img");
+    incomingImage.src = bikeImage.src;
+    incomingImage.alt = "";
+    incomingImage.className = bikeImage.className
+        .replace(/\bis-slide-in\b|\bis-slide-out\b|\bis-active\b|\bis-carousel-hidden\b|\bbike-image-clone\b|\bbike-carousel-item\b/g, "")
+        .trim();
+    incomingImage.classList.add("bike-carousel-item", "bike-carousel-incoming");
+    incomingImage.setAttribute("aria-hidden", "true");
+
+    stage.append(outgoingImage, incomingImage);
+    bikePreview.appendChild(stage);
+    bikeImage.classList.add("is-carousel-hidden");
+
+    const timing = {
+        duration: 680,
+        easing: "cubic-bezier(0.16, 0.86, 0.22, 1)",
+        fill: "both"
+    };
+
+    const incomingAnimation = incomingImage.animate([
+        {
+            transform: `translate3d(${incomingOffset}, 34px, 0) rotate(${incomingRotation}) scale(0.82)`,
+            opacity: 0
+        },
+        {
+            transform: `translate3d(${incomingCurve}, -18px, 0) rotate(0deg) scale(1.06)`,
+            opacity: 1,
+            offset: 0.64
+        },
+        {
+            transform: "translate3d(0, 0, 0) rotate(0deg) scale(1)",
+            opacity: 1
+        }
+    ], timing);
+
+    const outgoingAnimation = outgoingImage.animate([
+        {
+            transform: "translate3d(0, 0, 0) rotate(0deg) scale(1)",
+            opacity: 1
+        },
+        {
+            transform: `translate3d(${outgoingCurve}, -18px, 0) rotate(0deg) scale(1.06)`,
+            opacity: 1,
+            offset: 0.36
+        },
+        {
+            transform: `translate3d(${outgoingOffset}, 34px, 0) rotate(${outgoingRotation}) scale(0.82)`,
+            opacity: 0
+        }
+    ], timing);
+
+    const finishAnimation = () => {
+        if (animationToken !== bikeSwapAnimationToken) {
+            stage.remove();
+            return;
+        }
+
+        incomingAnimation.cancel();
+        outgoingAnimation.cancel();
+        cleanBikeSlideClasses(bikeImage);
+        stage.remove();
+    };
+
+    Promise.allSettled([incomingAnimation.finished, outgoingAnimation.finished]).then(() => {
+        finishAnimation();
+    });
+
+    window.setTimeout(finishAnimation, 840);
+};
+
+const renderBike = ({ animate = false, direction = 1 } = {}) => {
     const isTrackerBuild = activeCustomType === "TRACKER";
 
     if (!isTrackerBuild && activeColor === "brown") {
@@ -1966,13 +2096,24 @@ const renderBike = () => {
     const customTypeVariant = customTypeVariants[activeCustomType] || customTypeVariants.default;
     const customTypeSrc = customTypeVariant.srcByColor?.[activeColor] || customTypeVariant.src;
     const usingCustomBike = Boolean(customTypeSrc);
-
-    bikeImage.src = usingCustomBike ? customTypeSrc : colorVariant.src;
-    bikeImage.alt = usingCustomBike
+    const nextBikeSrc = usingCustomBike ? customTypeSrc : colorVariant.src;
+    const nextBikeAlt = usingCustomBike
         ? `Honda TMX 125 ${customTypeVariant.label.toLowerCase()} custom build`
         : `Honda TMX 125 motorcycle in ${activeColor}`;
+    const previousBikeState = {
+        src: bikeImage.src,
+        className: bikeImage.className
+    };
+
+    cleanBikeSlideClasses(bikeImage);
+    bikeImage.src = nextBikeSrc;
+    bikeImage.alt = nextBikeAlt;
     bikeImage.classList.toggle("is-scrambler-build", activeCustomType === "SCRAMBLER");
     bikeImage.classList.toggle("is-cafe-grey-build", activeCustomType === "CAFE RACER" && activeColor === "grey");
+
+    if (animate) {
+        animateBikeSwap(previousBikeState, direction);
+    }
 
     colorName.textContent = usingCustomBike ? customTypeVariant.bikeLabel : colorVariant.label;
     colorQuote.textContent = usingCustomBike ? customTypeVariant.bikeQuote : colorVariant.quote;
@@ -2010,8 +2151,19 @@ const renderBike = () => {
 
 colorButtons.forEach((button) => {
     button.addEventListener("click", () => {
+        const previousColor = activeColor;
+        const previousIndex = Array.from(colorButtons).findIndex((item) => item.dataset.color === previousColor);
+        const nextIndex = Array.from(colorButtons).indexOf(button);
+
+        if (button.dataset.color === previousColor) {
+            return;
+        }
+
         activeColor = button.dataset.color;
-        renderBike();
+        renderBike({
+            animate: true,
+            direction: nextIndex > previousIndex ? 1 : -1
+        });
         saveState();
     });
 });
@@ -2417,6 +2569,7 @@ document.addEventListener("dragstart", (event) => {
 
 loadSavedState();
 applyTheme();
+preloadBikeImages();
 renderBike();
 renderBuildStats();
 renderBuildVoteActions();
